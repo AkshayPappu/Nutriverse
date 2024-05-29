@@ -11,7 +11,7 @@ export default async function dashboard() {
 
     return (
         <>
-            <h1>Hello from Dashboard</h1>
+            <h1>Hello from About</h1>
         </>
         
     )
