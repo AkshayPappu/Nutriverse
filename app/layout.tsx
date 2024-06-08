@@ -7,7 +7,8 @@ import { SidebarItem } from "./components/Sidebar";
 import { LayoutDashboard, StickyNote, LifeBuoy, Settings } from "lucide-react";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import Link from 'next/link'
+import Link from 'next/link';
+import background from './assets/background.jpg';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,7 +35,13 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
     <html lang="en">
       <body className={inter.className}>
         <NextAuthProvider>
-          <div className="flex bg-white">
+          <div className="flex bg-white" style={{
+            backgroundImage: `url(${background.src})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed',
+            backgroundRepeat: 'no-repeat',
+          }}>
             <Sidebar>
               <Link href={"/dashboard"}>
                 <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" active={activeItem === "dashboard"} onClick={() => {handleClicked("dashboard")}}/>

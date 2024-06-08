@@ -111,6 +111,7 @@ export const authOptions: NextAuthOptions = {
         jwt: async ({ token, user }) => {
             if (user) {
                 token.email = user.email;
+                token.password = user.password;
                 token.id = user.id;
                 token.city = user.city;
                 token.state = user.state;
@@ -130,6 +131,7 @@ export const authOptions: NextAuthOptions = {
                 session.user = {
                     id: token.id as string,
                     email: token.email as string,
+                    password: token.password as string,
                     city: token.city as string,
                     state: token.state as string,
                     weight: token.weight as number,

@@ -3,6 +3,7 @@ import { ChevronFirst, ChevronLast, LogOut } from "lucide-react";
 import logo from "../assets/NutriverseLogo.png";
 import { createContext, useContext, useState, useEffect } from "react";
 import { ClipLoader } from "react-spinners";
+import { signOut } from "next-auth/react";
 
 const SidebarContext = createContext<{ expanded: boolean }>({} as { expanded: boolean });
 
@@ -55,7 +56,12 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
                             <span className="text-xs text-gray-600">akshaypap2005@gmail.com</span>
                         </div>
                     </div>
-                    <LogOut size={20} />
+                    <button className="relative p-1.5 rounded-lg hover:bg-green-50 group flex items-center font-medium">
+                        <LogOut size={20} onClick={() => signOut({ callbackUrl: '/login' })}/>
+                        <div className={`absolute left-full rounded-md px-2 py-1 ml-6 bg-green-100 text-green-800 text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}>
+                            Logout
+                        </div>
+                    </button>
                 </div>
             </nav>
         </aside>
