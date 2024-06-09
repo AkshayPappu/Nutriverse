@@ -4,10 +4,10 @@ import { redirect } from "next/navigation";
 
 
 export default async function dashboard() {
-    const session = await getServerSession(authOptions);
-    if (!session) {
-        redirect("/login");
-    }
+    // const session = await getServerSession(authOptions);
+    // if (!session) {
+    //     redirect("/login");
+    // }
 
     return (
         <>

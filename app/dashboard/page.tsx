@@ -5,10 +5,10 @@ import map from "../assets/map_ex.png";
 import { FileText, Trash2 } from 'lucide-react';
 
 export default async function dashboard() {
-    const session = await getServerSession(authOptions);
-    if (!session) {
-        redirect("/login");
-    }
+    // const session = await getServerSession(authOptions);
+    // if (!session) {
+    //     redirect("/login");
+    // }
 
     return (
         <div className="dashboard w-full h-screen flex flex-col p-5 overflow-hidden">
