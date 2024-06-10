@@ -1,10 +1,18 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
-import map from "../assets/map_ex.png";
-import { FileText, Trash2 } from 'lucide-react';
+'use client';
 
-export default async function dashboard() {
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+//import { getServerSession } from "next-auth";
+//import { redirect } from "next/navigation";
+import { FileText, Trash2 } from 'lucide-react';
+import dynamic from 'next/dynamic';
+import React, { useState } from 'react';
+
+const MapComponent = dynamic(() => import('../components/MapComponent'), { ssr: false });
+
+export default function Dashboard() {
+    const [supermarkets, setSupermarkets] = useState<Array<{ name: string, lat: number, lon: number, address: string, distance: number }>>([]);
+
+    // Commented out for development purposes
     // const session = await getServerSession(authOptions);
     // if (!session) {
     //     redirect("/login");
@@ -32,31 +40,25 @@ export default async function dashboard() {
                     <div className="map bg-white bg-opacity-50 rounded-lg p-5 flex-grow">
                         <h3 className="text-2xl font-semibold text-gray-800">Supermarkets Near You</h3>
                         <div className="flex flex-col lg:flex-row mt-10">
-                            <img src={map.src} className="w-full lg:w-1/2 h-auto lg:max-h-full lg:mr-5 mb-5 lg:mb-0" />
+                            <div className="w-full lg:w-1/2 h-auto lg:max-h-full lg:mr-5 mb-5 lg:mb-0">
+                                <MapComponent setSupermarkets={setSupermarkets} supermarkets={supermarkets} />
+                            </div>
                             <table className="border-collapse text-center w-full lg:w-1/2">
                                 <thead>
                                     <tr>
                                         <th className="border-b p-2 text-gray-600">Store Name</th>
                                         <th className="border-b p-2 text-gray-600">Address</th>
-                                        <th className="border-b p-2 text-gray-600">Distance</th>
+                                        <th className="border-b p-2 text-gray-600">Distance (km)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td className="border-b p-2 text-gray-700">Kroger</td>
-                                        <td className="border-b p-2 text-gray-700">123 Main St, Springfield</td>
-                                        <td className="border-b p-2 text-gray-700">1.2 miles</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="border-b p-2 text-gray-700">Whole Foods</td>
-                                        <td className="border-b p-2 text-gray-700">456 Elm St, Springfield</td>
-                                        <td className="border-b p-2 text-gray-700">0.8 miles</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="border-b p-2 text-gray-700">Publix</td>
-                                        <td className="border-b p-2 text-gray-700">789 Oak St, Springfield</td>
-                                        <td className="border-b p-2 text-gray-700">2.3 miles</td>
-                                    </tr>
+                                    {supermarkets.slice(0, 3).map((supermarket, index) => (
+                                        <tr key={index}>
+                                            <td className="border-b p-2 text-gray-700">{supermarket.name}</td>
+                                            <td className="border-b p-2 text-gray-700">{supermarket.address}</td>
+                                            <td className="border-b p-2 text-gray-700">{supermarket.distance.toFixed(2)}</td>
+                                        </tr>
+                                    ))}
                                 </tbody>
                             </table>
                         </div>
