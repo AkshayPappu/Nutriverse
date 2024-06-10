@@ -4,7 +4,7 @@ import "./globals.css";
 import { NextAuthProvider } from "./components/NextAuthProvider";
 import Sidebar from "./components/Sidebar";
 import { SidebarItem } from "./components/Sidebar";
-import { LayoutDashboard, StickyNote, LifeBuoy, Settings } from "lucide-react";
+import { LayoutDashboard, StickyNote, Salad, Settings } from "lucide-react";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from 'next/link';
@@ -50,11 +50,11 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
                 <SidebarItem icon={<StickyNote size={20} />} text="NutriBot" active={activeItem === "nutribot"} onClick={() => {handleClicked("nutribot")}}/>
               </Link>
               <hr className="my-3" />
+              <Link href={"/recipes"}>
+              <SidebarItem icon={<Salad size={20} />} text="Recipes" active={activeItem === "recipes"} onClick={() => {handleClicked("recipes")}}/>
+              </Link>
               <Link href={"/profile"}>
               <SidebarItem icon={<Settings size={20} />} text="Profile" active={activeItem === "profile"} onClick={() => {handleClicked("profile")}}/>
-              </Link>
-              <Link href={"/about"}>
-              <SidebarItem icon={<LifeBuoy size={20} />} text="About" active={activeItem === "about"} onClick={() => {handleClicked("about")}}/>
               </Link>
             </Sidebar>
             {children}
