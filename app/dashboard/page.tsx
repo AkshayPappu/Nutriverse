@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 'use client';
 
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
@@ -17,12 +18,29 @@ export default function Dashboard() {
     // if (!session) {
     //     redirect("/login");
     // }
+=======
+"use client";
+import { useEffect } from "react";
+import { useSession, signIn } from "next-auth/react";
+import map from "../assets/map_ex.png";
+import { FileText, Trash2 } from 'lucide-react';
+
+export default function dashboard() {
+    const { data: session, status } = useSession();
+
+    useEffect(() => {
+        if (status === "unauthenticated") {
+            signIn();
+        }
+    }, [session, status]);
+>>>>>>> a9141ad468d04127e86043e5acef86881301b17c
 
     return (
         <div className="dashboard w-full h-screen flex flex-col p-5 overflow-hidden">
             <div className="header p-3 flex-shrink-0">
                 <h1 className="text-3xl font-medium text-gray-800">Dashboard</h1>
             </div>
+            <hr className="border-t-1 border-black w-full" />
             <div className="content flex flex-col lg:flex-row justify-between flex-grow mt-5 space-y-5 lg:space-y-0 lg:space-x-5 overflow-auto">
                 <div className="left-content flex flex-col w-full lg:w-3/5 space-y-5">
                     <div className="cook-now bg-white bg-opacity-50 rounded-lg p-5 flex-grow">
@@ -31,7 +49,8 @@ export default function Dashboard() {
                         <div className="nutribot-button text-center mt-5">
                             <button
                                 type="button"
-                                className="bg-gradient-to-tr from-green-300 to-green-200 text-green-800 font-medium rounded-lg text-sm px-5 py-2.5 w-full"
+                                className="bg-gradient-to-tr from-green-300 to-green-200 text-green-800 hover:from-green-400 hover:to-green-300 
+                                    font-medium rounded-lg text-sm px-5 py-2.5 w-full"
                             >
                                 Try NutriBot
                             </button>
@@ -100,7 +119,8 @@ export default function Dashboard() {
                         <div className="mt-5 text-center">
                             <button
                                 type="button"
-                                className="bg-gradient-to-tr from-green-300 to-green-200 text-green-800 font-medium rounded-lg text-sm px-5 py-2.5"
+                                className="bg-gradient-to-tr from-green-300 to-green-200 text-green-800 hover:from-green-400 hover:to-green-300 
+                                    font-medium rounded-lg text-sm px-5 py-2.5"
                             >
                                 Add Recipe
                             </button>
