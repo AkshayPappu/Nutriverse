@@ -3,6 +3,7 @@ import { useSession, signIn } from "next-auth/react";
 import { useState, useEffect } from "react";
 
 export default function Profile() {
+    /** 
     const { data: session, status } = useSession();
     const [state, setState] = useState("");
 
@@ -13,7 +14,7 @@ export default function Profile() {
             signIn();
         }
     }, [session, status]);
-
+    */
     const states = [
         "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", 
         "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", 
