@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useSession, signIn } from "next-auth/react";
 
 
-export default async function recipes() {
+export default function recipes() {
     const { data: session, status } = useSession();
 
     useEffect(() => {

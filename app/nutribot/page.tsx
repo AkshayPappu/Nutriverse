@@ -5,7 +5,7 @@ import ChatInput from "../components/AutoResizeTextArea";
 import logo from "../assets/NutriverseLogo.png";
 import user_icon from "../assets/user_icon.png";
 
-export default async function nutribot() {
+export default function nutribot() {
     const { data: session, status } = useSession();
 
     useEffect(() => {

@@ -36,19 +36,54 @@ export default function Profile() {
             <hr className="border-t-1 border-black w-full" />
             <div className="form my-10 w-full flex justify-center overflow-auto max-h-screen">
                 <form className="max-w-2xl w-full">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 mr-2 md:grid-cols-2 md:mr-2 gap-4">
                         <div>
                             <div className="mb-5">
                                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
                                 <input type="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" defaultValue={session?.user.email} />
                             </div>
                             <div className="mb-5">
-                                <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                                <input type="password" id="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" />
+                                <label htmlFor="weight" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Weight (lbs)</label>
+                                <input type="number" id="weight" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" />
                             </div>
                             <div className="mb-5">
                                 <label htmlFor="city" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">City</label>
                                 <input type="text" id="city" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" />
+                            </div>
+                            <div className="mb-5">
+                                <label htmlFor="cookingTimePerDay" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cooking Time Per Day</label>
+                                <input type="number" id="cookingTimePerDay" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" />
+                            </div>
+                            <div className="mb-5">
+                                <label htmlFor="height" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Height</label>
+                                <div className="flex justify-between">
+                                    <div className="flex w-1/2 mr-2">
+                                        <input
+                                            type="text"
+                                            id="height-feet"
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                                            value=" 5 ft."
+                                        />
+                                    </div>
+                                    <div className="flex w-1/2">
+                                        <input
+                                            type="text"
+                                            id="height-inches"
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                                            value=" 10 in."
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div className="mb-5">
+                                <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                                <input type="password" id="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" />
+                            </div>
+                            <div className="mb-5">
+                                <label htmlFor="desiredWeight" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Desired Weight</label>
+                                <input type="number" id="desiredWeight" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" />
                             </div>
                             <div className="mb-5">
                                 <label htmlFor="state" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">State</label>
@@ -64,24 +99,7 @@ export default function Profile() {
                                     ))}
                                 </select>
                             </div>
-                            <div className="mb-5">
-                                <label htmlFor="weight" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Weight (lbs)</label>
-                                <input type="number" id="weight" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" />
-                            </div>
-                        </div>
-                        <div>
-                            <div className="mb-5">
-                                <label htmlFor="height" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Height</label>
-                                <input type="text" id="height" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" />
-                            </div>
-                            <div className="mb-5">
-                                <label htmlFor="desiredWeight" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Desired Weight</label>
-                                <input type="number" id="desiredWeight" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" />
-                            </div>
-                            <div className="mb-5">
-                                <label htmlFor="cookingTimePerDay" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cooking Time Per Day</label>
-                                <input type="number" id="cookingTimePerDay" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" />
-                            </div>
+                            
                             <div className="mb-5">
                                 <label htmlFor="dietaryRestrictions" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dietary Restrictions</label>
                                 <input type="text" id="dietaryRestrictions" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" />

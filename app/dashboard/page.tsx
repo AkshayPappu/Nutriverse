@@ -1,10 +1,14 @@
-"use client";
-import { useEffect } from "react";
-import { useSession, signIn } from "next-auth/react";
-import map from "../assets/map_ex.png";
-import { FileText, Trash2 } from 'lucide-react';
+'use client';
 
-export default function dashboard() {
+import { useSession, signIn } from "next-auth/react";
+import { FileText, Trash2 } from 'lucide-react';
+import dynamic from 'next/dynamic';
+import React, { useState, useEffect } from 'react';
+import TypingComponent from "../components/TypingComponent";
+
+const MapComponent = dynamic(() => import('../components/MapComponent'), { ssr: false });
+
+export default function Dashboard() {
     const { data: session, status } = useSession();
 
     useEffect(() => {
@@ -13,8 +17,11 @@ export default function dashboard() {
         }
     }, [session, status]);
 
+    const [supermarkets, setSupermarkets] = useState<Array<{ name: string, lat: number, lon: number, address: string, distance: number }>>([]);
+
     return (
         <div className="dashboard w-full h-screen flex flex-col p-5 overflow-hidden">
+
             <div className="header p-3 flex-shrink-0">
                 <h1 className="text-3xl font-medium text-gray-800">Dashboard</h1>
             </div>
@@ -22,13 +29,12 @@ export default function dashboard() {
             <div className="content flex flex-col lg:flex-row justify-between flex-grow mt-5 space-y-5 lg:space-y-0 lg:space-x-5 overflow-auto">
                 <div className="left-content flex flex-col w-full lg:w-3/5 space-y-5">
                     <div className="cook-now bg-white bg-opacity-50 rounded-lg p-5 flex-grow">
-                        <h1 className="text-5xl font-semibold text-gray-800">Nutriverse: Fueling Your Journey to Health.</h1>
+                        <TypingComponent />
                         <h3 className="text-lg font-medium text-gray-600 mt-5">Cooking made easier with fresh & customized meal preparation just for you</h3>
                         <div className="nutribot-button text-center mt-5">
                             <button
                                 type="button"
-                                className="bg-gradient-to-tr from-green-300 to-green-200 text-green-800 hover:from-green-400 hover:to-green-300 
-                                    font-medium rounded-lg text-sm px-5 py-2.5 w-full"
+                                className="bg-gradient-to-tr from-green-300 to-green-200 text-green-800 hover:from-green-400 hover:to-green-300 font-medium rounded-lg text-sm px-5 py-2.5 w-full"
                             >
                                 Try NutriBot
                             </button>
@@ -37,31 +43,25 @@ export default function dashboard() {
                     <div className="map bg-white bg-opacity-50 rounded-lg p-5 flex-grow">
                         <h3 className="text-2xl font-semibold text-gray-800">Supermarkets Near You</h3>
                         <div className="flex flex-col lg:flex-row mt-10">
-                            <img src={map.src} className="w-full lg:w-1/2 h-auto lg:max-h-full lg:mr-5 mb-5 lg:mb-0" />
+                            <div className="w-full lg:w-1/2 h-auto lg:max-h-full lg:mr-5 mb-5 lg:mb-0">
+                                <MapComponent setSupermarkets={setSupermarkets} supermarkets={supermarkets} />
+                            </div>
                             <table className="border-collapse text-center w-full lg:w-1/2">
                                 <thead>
                                     <tr>
                                         <th className="border-b p-2 text-gray-600">Store Name</th>
                                         <th className="border-b p-2 text-gray-600">Address</th>
-                                        <th className="border-b p-2 text-gray-600">Distance</th>
+                                        <th className="border-b p-2 text-gray-600">Distance (km)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td className="border-b p-2 text-gray-700">Kroger</td>
-                                        <td className="border-b p-2 text-gray-700">123 Main St, Springfield</td>
-                                        <td className="border-b p-2 text-gray-700">1.2 miles</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="border-b p-2 text-gray-700">Whole Foods</td>
-                                        <td className="border-b p-2 text-gray-700">456 Elm St, Springfield</td>
-                                        <td className="border-b p-2 text-gray-700">0.8 miles</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="border-b p-2 text-gray-700">Publix</td>
-                                        <td className="border-b p-2 text-gray-700">789 Oak St, Springfield</td>
-                                        <td className="border-b p-2 text-gray-700">2.3 miles</td>
-                                    </tr>
+                                    {supermarkets.slice(0, 3).map((supermarket, index) => (
+                                        <tr key={index}>
+                                            <td className="border-b p-2 text-gray-700">{supermarket.name}</td>
+                                            <td className="border-b p-2 text-gray-700">{supermarket.address}</td>
+                                            <td className="border-b p-2 text-gray-700">{supermarket.distance.toFixed(2)}</td>
+                                        </tr>
+                                    ))}
                                 </tbody>
                             </table>
                         </div>
@@ -103,8 +103,7 @@ export default function dashboard() {
                         <div className="mt-5 text-center">
                             <button
                                 type="button"
-                                className="bg-gradient-to-tr from-green-300 to-green-200 text-green-800 hover:from-green-400 hover:to-green-300 
-                                    font-medium rounded-lg text-sm px-5 py-2.5"
+                                className="bg-gradient-to-tr from-green-300 to-green-200 text-green-800 hover:from-green-400 hover:to-green-300 font-medium rounded-lg text-sm px-5 py-2.5"
                             >
                                 Add Recipe
                             </button>

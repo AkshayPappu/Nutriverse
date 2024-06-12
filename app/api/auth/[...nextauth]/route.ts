@@ -33,6 +33,7 @@ async function authenticate(email: string, password: string): Promise<AuthRespon
         });
         let data = await response.json();
         data = data.user
+        console.log(data);
 
         if (response.status !== 200) {
             throw new Error("Either the user does not exist or the password is incorrect");
