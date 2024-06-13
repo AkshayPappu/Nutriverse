@@ -2,7 +2,6 @@
 import { ChevronFirst, ChevronLast, LogOut } from "lucide-react";
 import logo from "../assets/NutriverseLogo.png";
 import { createContext, useContext, useState, useEffect } from "react";
-import { ClipLoader } from "react-spinners";
 import { signOut } from "next-auth/react";
 
 const SidebarContext = createContext<{ expanded: boolean }>({} as { expanded: boolean });
@@ -27,13 +26,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
         }
     }, [expanded, isMounted]);
 
-    if (!isMounted) {
-        return (
-            <div className="flex justify-center items-center h-screen w-screen fixed top-0 left-0 bg-white z-50">
-                <ClipLoader />
-            </div>
-        ); // Render full-screen spinner until mounted
-    }
+    
 
     return (
         <aside className="h-screen">

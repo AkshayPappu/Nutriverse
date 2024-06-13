@@ -4,18 +4,29 @@ import { useSession, signIn } from "next-auth/react";
 import ChatInput from "../components/AutoResizeTextArea";
 import logo from "../assets/NutriverseLogo.png";
 import user_icon from "../assets/user_icon.png";
+import FullSidebar from "../components/FullSidebar";
+import { ClipLoader } from "react-spinners";
 
 export default function nutribot() {
     const { data: session, status } = useSession();
 
     useEffect(() => {
         if (status === "unauthenticated") {
-            signIn();
+            window.location.href = "/login";
         }
     }, [session, status]);
 
+    if (status === "loading" || status === "unauthenticated") {
+        return (
+            <div className="fixed inset-0 flex items-center justify-center bg-green-50">
+                <ClipLoader />
+            </div>
+        );
+    }
+
     return (
         <>
+            <FullSidebar />
             <div className="dashboard w-full h-screen flex flex-col p-5 overflow-hidden">
                 <div className="header p-3 flex-shrink-0">
                     <h1 className="text-3xl font-medium text-gray-800">NutriBot</h1>
