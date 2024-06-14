@@ -13,6 +13,7 @@ const MapComponent = dynamic(() => import('../components/MapComponent'), { ssr: 
 
 export default function Dashboard() {
     const { data: session, status } = useSession();
+    const [supermarkets, setSupermarkets] = useState<Array<{ name: string, lat: number, lon: number, address: string, distance: number }>>([]);
 
     useEffect(() => {
         if (status === "unauthenticated") {
@@ -27,8 +28,6 @@ export default function Dashboard() {
             </div>
         );
     }
-
-    const [supermarkets, setSupermarkets] = useState<Array<{ name: string, lat: number, lon: number, address: string, distance: number }>>([]);
 
     return (
         <>

@@ -1,19 +1,48 @@
 'use client';
 
-import { useSession, signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import React, { useState, useEffect } from 'react';
 import { FileText, Edit, Trash2 } from 'lucide-react';
 import FullSidebar from "../components/FullSidebar";
 import { ClipLoader } from "react-spinners";
+import AddRecipeModal from '../components/AddRecipeModal';
+import EditRecipeModal from "../components/EditRecipeModal";
+
+type Recipe = {
+    name: string;
+    dateAdded: string;
+    file: string;
+};
 
 export default function Recipes() {
     const { data: session, status } = useSession();
+    const [recipes, setRecipes] = useState<Array<Recipe>>([
+        { name: 'Chicken Biryani', dateAdded: '2024-05-21', file: '' },
+        { name: 'Vegetable Stir Fry', dateAdded: '2024-05-22', file: '' },
+        { name: 'Spaghetti Carbonara', dateAdded: '2024-05-23', file: '' }
+    ]);
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [currentRecipe, setCurrentRecipe] = useState<Recipe | null>(null);
 
     useEffect(() => {
         if (status === "unauthenticated") {
             window.location.href = "/login";
         }
     }, [session, status]);
+
+    const handleAddRecipe = (newRecipe: Recipe) => {
+        setRecipes([...recipes, newRecipe]);
+    };
+
+    const handleEditRecipe = (updatedRecipe: Recipe) => {
+        setRecipes(recipes.map(recipe => recipe.name === updatedRecipe.name ? updatedRecipe : recipe));
+    };
+
+    const handleEditClick = (recipe: Recipe) => {
+        setCurrentRecipe(recipe);
+        setIsEditModalOpen(true);
+    };
 
     if (status === "loading" || status === "unauthenticated") {
         return (
@@ -22,12 +51,6 @@ export default function Recipes() {
             </div>
         );
     }
-    
-    const [recipes, setRecipes] = useState<Array<{ name: string, dateAdded: string, description: string }>>([
-        { name: 'Chicken Biryani', dateAdded: '2024-05-21', description: 'A delicious chicken and rice dish.' },
-        { name: 'Vegetable Stir Fry', dateAdded: '2024-05-22', description: 'A healthy mix of vegetables stir-fried.' },
-        { name: 'Spaghetti Carbonara', dateAdded: '2024-05-23', description: 'A classic Italian pasta dish.' }
-    ]);
 
     return (
         <>
@@ -57,7 +80,10 @@ export default function Recipes() {
                                                 <button className="bg-gradient-to-tr from-green-300 to-green-200 text-green-800 hover:from-green-400 hover:to-green-300 font-medium rounded-lg text-sm px-2 py-1 flex items-center">
                                                     <FileText />
                                                 </button>
-                                                <button className="bg-purple-200 hover:bg-purple-300 text-gray-800 font-medium rounded-lg text-sm px-2 py-1 flex items-center">
+                                                <button 
+                                                    className="bg-purple-200 hover:bg-purple-300 text-gray-800 font-medium rounded-lg text-sm px-2 py-1 flex items-center"
+                                                    onClick={() => handleEditClick(recipe)}
+                                                >
                                                     <Edit />
                                                 </button>
                                                 <button className="bg-red-300 hover:bg-red-400 text-red-800 font-medium rounded-lg text-sm px-2 py-1 flex items-center">
@@ -72,6 +98,7 @@ export default function Recipes() {
                         <div className="mt-5 text-center">
                             <button
                                 type="button"
+                                onClick={() => setIsAddModalOpen(true)}
                                 className="bg-gradient-to-tr from-green-300 to-green-200 hover:from-green-400 hover:to-green-300 text-green-800 font-medium rounded-lg text-sm px-5 py-2.5"
                             >
                                 Add Recipe
@@ -80,6 +107,19 @@ export default function Recipes() {
                     </div>
                 </div>
             </div>
+            <AddRecipeModal
+                isOpen={isAddModalOpen}
+                onClose={() => setIsAddModalOpen(false)}
+                onAddRecipe={handleAddRecipe}
+            />
+            {currentRecipe && (
+                <EditRecipeModal
+                    isOpen={isEditModalOpen}
+                    onClose={() => setIsEditModalOpen(false)}
+                    onEditRecipe={handleEditRecipe}
+                    recipe={currentRecipe}
+                />
+            )}
         </>
     );
 }
