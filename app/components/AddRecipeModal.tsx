@@ -8,7 +8,7 @@ type AddRecipeModalProps = {
 
 type Recipe = {
     name: string;
-    dateAdded: string;
+    date: string;
     file: string;
 };
 
@@ -54,7 +54,7 @@ const AddRecipeModal: React.FC<AddRecipeModalProps> = ({ isOpen, onClose, onAddR
         if (recipeName && file) {
             const newRecipe: Recipe = {
                 name: recipeName,
-                dateAdded: new Date().toISOString().split('T')[0],
+                date: new Date().toISOString().split('T')[0],
                 file: URL.createObjectURL(file),
             };
             onAddRecipe(newRecipe);

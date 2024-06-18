@@ -10,7 +10,7 @@ type EditRecipeModalProps = {
 
 type Recipe = {
     name: string;
-    dateAdded: string;
+    date: string;
     file: string;
 };
 
@@ -55,7 +55,7 @@ const EditRecipeModal: React.FC<EditRecipeModalProps> = ({ isOpen, onClose, onEd
         e.preventDefault();
         const updatedRecipe: Recipe = {
             name: recipeName,
-            dateAdded: recipe.dateAdded,
+            date: recipe.date,
             file: file ? URL.createObjectURL(file) : recipe.file,
         };
         onEditRecipe(updatedRecipe);
