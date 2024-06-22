@@ -1,4 +1,6 @@
+"use client";
 import React, { useState, ChangeEvent, FormEvent, DragEvent, useEffect } from 'react';
+import { useSession } from "next-auth/react";
 
 type AddRecipeModalProps = {
     isOpen: boolean;
@@ -7,12 +9,14 @@ type AddRecipeModalProps = {
 };
 
 type Recipe = {
+    _id : string;
     name: string;
     date: string;
     file: string;
 };
 
 const AddRecipeModal: React.FC<AddRecipeModalProps> = ({ isOpen, onClose, onAddRecipe }) => {
+    const { data: session } = useSession();
     const [recipeName, setRecipeName] = useState<string>('');
     const [file, setFile] = useState<File | null>(null);
     const [dragActive, setDragActive] = useState<boolean>(false);
@@ -48,17 +52,39 @@ const AddRecipeModal: React.FC<AddRecipeModalProps> = ({ isOpen, onClose, onAddR
             setFile(e.dataTransfer.files[0]);
         }
     };
-
-    const handleSubmit = (e: FormEvent) => {
+    // call backend endpoint to create recipe
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        if (recipeName && file) {
-            const newRecipe: Recipe = {
-                name: recipeName,
-                date: new Date().toISOString().split('T')[0],
-                file: URL.createObjectURL(file),
-            };
-            onAddRecipe(newRecipe);
-            onClose();
+        if (recipeName && file && session) {
+            try {
+                const formData = new FormData();
+                formData.append('name', recipeName);
+                formData.append('file', file);
+                formData.append('user_id', session.user.id);
+                formData.append('date', new Date().toISOString());
+                
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/recipes/create`, {
+                    method: 'POST',
+                    body: formData,
+                });
+                
+                if (response.status === 201) {
+                    const response_json = await response.json();
+                    console.log(`response: ${response_json.object._id}`)
+                    let newRecipe = response_json.object;
+                    console.log(`newRecipe: ${newRecipe}`)
+                    console.log(newRecipe.name), console.log(newRecipe.date)
+                    onAddRecipe(newRecipe);
+                    onClose();
+                }
+                else {  
+                    console.log(`response: ${response.status}`)
+                    throw new Error("Failed to add recipe");
+                }
+            }
+            catch (error) {
+                console.error(error);
+            }
         }
     };
 

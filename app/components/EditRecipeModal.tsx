@@ -1,5 +1,6 @@
-// EditRecipeModal.tsx
+'use client';
 import React, { useState, ChangeEvent, FormEvent, DragEvent, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 
 type EditRecipeModalProps = {
     isOpen: boolean;
@@ -9,12 +10,14 @@ type EditRecipeModalProps = {
 };
 
 type Recipe = {
+    _id: string;
     name: string;
     date: string;
     file: string;
 };
 
 const EditRecipeModal: React.FC<EditRecipeModalProps> = ({ isOpen, onClose, onEditRecipe, recipe }) => {
+    const { data: session } = useSession();
     const [recipeName, setRecipeName] = useState<string>(recipe.name);
     const [file, setFile] = useState<File | null>(null);
     const [dragActive, setDragActive] = useState<boolean>(false);
@@ -51,15 +54,32 @@ const EditRecipeModal: React.FC<EditRecipeModalProps> = ({ isOpen, onClose, onEd
         }
     };
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        const updatedRecipe: Recipe = {
-            name: recipeName,
-            date: recipe.date,
-            file: file ? URL.createObjectURL(file) : recipe.file,
-        };
-        onEditRecipe(updatedRecipe);
-        onClose();
+        if (recipeName && session) {
+            try {
+                const formData = new FormData();
+                formData.append('name', recipeName);
+                formData.append('file', file || '');
+                formData.append('user_id', session.user.id);
+                formData.append('_id', recipe._id);
+                formData.append('date', recipe.date);
+
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/recipes/update/${recipe._id}`, {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (response.status === 200) {
+                    const response_json = await response.json();
+                    let updatedRecipe = response_json.object;
+                    onEditRecipe(updatedRecipe);
+                    onClose();
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
     };
 
     const handleRemoveFile = () => {
